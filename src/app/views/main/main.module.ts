@@ -8,6 +8,7 @@ import { StorageService } from '../../core/utils/storage.service';
 import { AlunoModule } from './aluno/aluno.module';
 import { DisciplinaModule } from './disciplina/disciplina.module';
 import { CursoModule } from './curso/curso.module';
+import { ControlePresencaModule } from './controle-presenca/controle-presenca.module';
 
 @NgModule({
     imports: [
@@ -16,11 +17,12 @@ import { CursoModule } from './curso/curso.module';
         ProfessorModule,
         AlunoModule,
         DisciplinaModule,
-        CursoModule
+        CursoModule,
+        ControlePresencaModule
     ],
     exports: [],
     declarations: [MainComponent],
-    providers: [UserService, StorageService],
+    providers: [UserService, StorageService]
 })
 export class MainModule {
 }
