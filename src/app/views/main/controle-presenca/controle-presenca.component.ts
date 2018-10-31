@@ -7,15 +7,24 @@ import { UiToolbarService } from 'ng-smn-ui';
   styleUrls: ['./controle-presenca.component.scss']
 })
 export class ControlePresencaComponent implements OnInit, AfterViewInit, OnDestroy {
+  menuList;
+  itemModel;
 
-  constructor(private toolbarService: UiToolbarService) { }
+  constructor(private toolbarService: UiToolbarService) { 
+    this.itemModel = {
+      parentId: 'idMae',
+      name: 'nome'
+  };
+
+  this.menuList = [{}];
+  }
 
   ngOnInit() {
   }
 
 
   ngAfterViewInit() {
-    this.toolbarService.activateExtendedToolbar(840);
+    this.toolbarService.activateExtendedToolbar(600);
   }
 
   ngOnDestroy() {
