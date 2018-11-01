@@ -6,6 +6,7 @@ import { ErrorModule } from './views/error/error.module';
 import { MainModule } from './views/main/main.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AuthModule } from './views/auth/auth.module';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 @NgModule({
     declarations: [
@@ -16,7 +17,8 @@ import { AuthModule } from './views/auth/auth.module';
         AppRoutingModule,
         ErrorModule,
         MainModule,
-        AuthModule
+        AuthModule,
+        BrowserAnimationsModule,
     ],
     providers: [],
     bootstrap: [AppComponent]
