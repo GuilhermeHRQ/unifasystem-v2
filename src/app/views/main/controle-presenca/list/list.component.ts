@@ -16,9 +16,12 @@ export class ListComponent implements OnInit, AfterViewInit {
     filterOpen: boolean;
     loadingInit: boolean;
     statusList;
+    disciplinas;
+    turmas;
     dataInicial;
     dataFinal;
     filtro;
+    totalLinhas;
     pagina: number;
 
     constructor(
@@ -27,12 +30,15 @@ export class ListComponent implements OnInit, AfterViewInit {
     ) {
         this.filtro = {};
         this.filterOpen = false;
+        this.loadingInit = false;
         this.pagina = 1;
     }
 
     ngOnInit() {
         this.getControlesPresencas();
         this.getStatus();
+        this.getDisciplina();
+        this.getTurma();
     }
 
     ngAfterViewInit() {
@@ -40,6 +46,7 @@ export class ListComponent implements OnInit, AfterViewInit {
     }
 
     getControlesPresencas() {
+        console.log(this.filtro)
         this.loadingInit = true;
         this.api.prep(
             'administracao',
@@ -51,9 +58,9 @@ export class ListComponent implements OnInit, AfterViewInit {
         })
             .subscribe(
                 res => {
-                    console.log(this.pagina);
-                    console.log(res.content);
                     this.list = res.content;
+                    this.totalLinhas = res.totalLinhas;
+                    console.log(res)
                 }, null,
                 () => {
                     this.loadingInit = false;
@@ -68,6 +75,36 @@ export class ListComponent implements OnInit, AfterViewInit {
         ).call()
             .subscribe(res => {
                     this.statusList = res.content;
+                }, null,
+                () => {
+
+                }
+            );
+    }
+
+    getDisciplina() {
+        this.api.prep(
+            'administracao',
+            'disciplina',
+            'selecionar'
+        ).call()
+            .subscribe(res => {
+                    this.disciplinas = res.content
+                }, null,
+                () => {
+
+                }
+            );
+    }
+
+    getTurma() {
+        this.api.prep(
+            'administracao',
+            'turma',
+            'selecionar'
+        ).call()
+            .subscribe(res => {
+                    this.turmas = res.content
                 }, null,
                 () => {
 
