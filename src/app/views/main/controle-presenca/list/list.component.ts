@@ -35,7 +35,7 @@ export class ListComponent implements OnInit, AfterViewInit {
     }
 
     ngOnInit() {
-        this.getControlesPresencas();
+        this.getControlesPresencas(null);
         this.getStatus();
         this.getDisciplina();
         this.getTurma();
@@ -45,22 +45,21 @@ export class ListComponent implements OnInit, AfterViewInit {
         this.toolbar.activateExtendedToolbar(600);
     }
 
-    getControlesPresencas() {
-        console.log(this.filtro)
+    getControlesPresencas(filtro) {
+        console.log(this.filtro);
         this.loadingInit = true;
         this.api.prep(
             'administracao',
             'controlePresenca',
             'selecionar'
         ).call({
-            pagina: this.pagina,
+            pagina: !!filtro ? 1 : this.pagina,
             ...this.filtro
         })
             .subscribe(
                 res => {
                     this.list = res.content;
                     this.totalLinhas = res.totalLinhas;
-                    console.log(res)
                 }, null,
                 () => {
                     this.loadingInit = false;
@@ -89,7 +88,7 @@ export class ListComponent implements OnInit, AfterViewInit {
             'selecionar'
         ).call()
             .subscribe(res => {
-                    this.disciplinas = res.content
+                    this.disciplinas = res.content;
                 }, null,
                 () => {
 
@@ -104,7 +103,7 @@ export class ListComponent implements OnInit, AfterViewInit {
             'selecionar'
         ).call()
             .subscribe(res => {
-                    this.turmas = res.content
+                    this.turmas = res.content;
                 }, null,
                 () => {
 

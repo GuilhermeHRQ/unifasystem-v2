@@ -17,29 +17,29 @@
             <ui-card-content>
                 <ui-input-container>
                     <ui-select #inputStatus="ngModel" id="select" name="status" [(ngModel)]="filtro.idStatus" [chosen]="true"
-                        [options]="statusList" value="id" label="descricao" uiInput (blur)="getControlesPresencas()">
+                        [options]="statusList" value="id" label="descricao" uiInput (ngModelChange)="getControlesPresencas(filtro)">
                     </ui-select>
                     <label for="select"> Status </label>
                 </ui-input-container>
-        
+
                     <ui-input-container>
                             <ui-select #inputTurma="ngModel" id="turma" name="turma" [(ngModel)]="filtro.idTurma"
-                            [chosen]="true" [options]="turmas" value="id" label="nome" uiInput>
+                            [chosen]="true" [options]="turmas" value="id" label="nome" uiInput (ngModelChange)="getControlesPresencas(filtro)">
                         </ui-select>
                         <label for="turma"> Turma </label>
                     </ui-input-container>
-                
+
                     <ui-input-container>
                         <ui-select #inputDisciplinas="ngModel" id="disciplina" name="disciplina" [(ngModel)]="filtro.idDisciplina"
-                            [chosen]="true" [options]="disciplinas" value="id" label="nome" uiInput>
+                            [chosen]="true" [options]="disciplinas" value="id" label="nome" uiInput (ngModelChange)="getControlesPresencas(filtro)">
                         </ui-select>
                         <label for="disciplina"> Disciplina </label>
                     </ui-input-container>
-            
+
                 <div class="ui-flex-container">
                     <ui-input-container>
                         <input type="text" uiInput name="dataInicial" [(ngModel)]="filtro.dataInicial"
-                            #inputDataInicial="ngModel" [uiDatePicker]="'dataInicial'" [maxDate]="dataFinal" uiMaskDate
+                            #inputDataInicial="ngModel" [uiDatePicker]="'dataInicial'" [maxDate]="filtro.dataFinal" uiMaskDate
                             required>
                         <label>Data inicial</label>
                         <div class="icon">
@@ -60,7 +60,7 @@
                     </ui-input-container>
                     <ui-input-container>
                         <input type="text" uiInput name="dataFinal" #inputDataFinal="ngModel" [(ngModel)]="filtro.dataFinal"
-                            [uiDatePicker]="'dataFinal'" [minDate]="dataInicial" uiMaskDate required>
+                            [uiDatePicker]="'dataFinal'" [minDate]="filtro.dataInicial" uiMaskDate required>
                         <label>Data final</label>
                         <div class="icon">
                             <button class="ui-button icon flat" [uiDatePickerCaller]="'dataFinal'">
@@ -108,6 +108,9 @@
                 <tr>
                     <td colspan="4" *ngIf="loadingInit">
                         Carregando...
+                    </td>
+                    <td colspan="4" *ngIf="totalLinhas == 0">
+                        Nenhum dado encontrado.
                     </td>
                 </tr>
             </tbody>
