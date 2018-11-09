@@ -45,8 +45,16 @@ export class ListComponent implements OnInit, AfterViewInit {
         this.toolbar.activateExtendedToolbar(600);
     }
 
+    formmatDate(dateString) {
+        dateString = new Date(this.filtro.dataInicial).toLocaleDateString();
+        const formmatedDate = dateString.split('/').reverse().join('-');
+        return formmatedDate;
+    }
+
     getControlesPresencas(filtro) {
-        console.log(this.filtro);
+        this.filtro.dataInicial = this.filtro.dataInicial ? new Date(this.filtro.dataInicial).toLocaleDateString() : undefined;
+        this.filtro.dataFinal = this.filtro.dataFinal ? new Date(this.filtro.dataFinal).toLocaleDateString() : undefined;
+
         this.loadingInit = true;
         this.api.prep(
             'administracao',

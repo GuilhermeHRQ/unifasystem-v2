@@ -103,6 +103,11 @@ export class ApiService {
                 const methodFormatted: string = method.toUpperCase();
 
                 if (methodFormatted === 'GET' || methodFormatted === 'DELETE') {
+                    Object.keys(paramsFormatted.leftover).forEach(item => {
+                        if(!paramsFormatted.leftover[item]) {
+                            delete paramsFormatted.leftover[item];
+                        }
+                    });
                     options.params = paramsFormatted.leftover;
                 } else {
                     options.body = paramsFormatted.leftover;

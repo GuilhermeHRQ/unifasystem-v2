@@ -8,6 +8,6 @@ export const environment = {
     // Sistema
     SYSTEM_PREFIX: 'UnifaSystem', // Prefixo para indentificar o sistema, usado nos cookies,
     // SMN Auth
-    AUTH_API: 'http://unifasystem-api.herokuapp.com', // API do auth
-    AUTH_BY_EMAIL: false // O sistema faz o login atráves do e-mail
+    AUTH_API: 'http://18.188.151.183:1001', // API do auth
+    AUTH_BY_EMAIL: true // O sistema faz o login atráves do e-mail
 };
