@@ -17,21 +17,21 @@
             <ui-card-content>
                 <ui-input-container>
                     <ui-select #inputStatus="ngModel" id="select" name="status" [(ngModel)]="filtro.idStatus" [chosen]="true"
-                        [options]="statusList" value="id" label="descricao" uiInput (ngModelChange)="getControlesPresencas(filtro)">
+                        [options]="statusList" value="id" label="descricao" uiInput (ngModelChange)="getControlesPresencas()">
                     </ui-select>
                     <label for="select"> Status </label>
                 </ui-input-container>
 
                     <ui-input-container>
                             <ui-select #inputTurma="ngModel" id="turma" name="turma" [(ngModel)]="filtro.idTurma"
-                            [chosen]="true" [options]="turmas" value="id" label="nome" uiInput (ngModelChange)="getControlesPresencas(filtro)">
+                            [chosen]="true" [options]="turmas" value="id" label="nome" uiInput (ngModelChange)="getControlesPresencas()">
                         </ui-select>
                         <label for="turma"> Turma </label>
                     </ui-input-container>
 
                     <ui-input-container>
                         <ui-select #inputDisciplinas="ngModel" id="disciplina" name="disciplina" [(ngModel)]="filtro.idDisciplina"
-                            [chosen]="true" [options]="disciplinas" value="id" label="nome" uiInput (ngModelChange)="getControlesPresencas(filtro)">
+                            [chosen]="true" [options]="disciplinas" value="id" label="nome" uiInput (ngModelChange)="getControlesPresencas()">
                         </ui-select>
                         <label for="disciplina"> Disciplina </label>
                     </ui-input-container>

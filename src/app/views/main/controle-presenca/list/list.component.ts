@@ -1,17 +1,17 @@
-import {Component, OnInit, AfterViewInit} from '@angular/core';
+import {Component, OnInit, AfterViewInit, ViewChild} from '@angular/core';
 import {ApiService} from '../../../../core/api/api.service';
 import {UiToolbarService} from 'ng-smn-ui';
 import {enterLeaveViewAnimation} from '../../../../core/utils/animations/enter-leave-view.animations';
 
 @Component({
-    selector: 'app-list',
+    selector: 'app-controle-presenca-list',
     templateUrl: './list.component.html',
     styleUrls: ['./list.component.scss'],
     animations: [
         enterLeaveViewAnimation
     ]
 })
-export class ListComponent implements OnInit, AfterViewInit {
+export class ControlePresencaListComponent implements OnInit, AfterViewInit {
     list;
     filterOpen: boolean;
     loadingInit: boolean;
@@ -35,7 +35,7 @@ export class ListComponent implements OnInit, AfterViewInit {
     }
 
     ngOnInit() {
-        this.getControlesPresencas(null);
+        this.getControlesPresencas();
         this.getStatus();
         this.getDisciplina();
         this.getTurma();
@@ -51,27 +51,39 @@ export class ListComponent implements OnInit, AfterViewInit {
         return formmatedDate;
     }
 
-    getControlesPresencas(filtro) {
-        this.filtro.dataInicial = this.filtro.dataInicial ? new Date(this.filtro.dataInicial).toLocaleDateString() : undefined;
-        this.filtro.dataFinal = this.filtro.dataFinal ? new Date(this.filtro.dataFinal).toLocaleDateString() : undefined;
+    /*verifyDate() {
+        if() {
+            return;
+        }
 
-        this.loadingInit = true;
-        this.api.prep(
-            'administracao',
-            'controlePresenca',
-            'selecionar'
-        ).call({
-            pagina: !!filtro ? 1 : this.pagina,
-            ...this.filtro
-        })
-            .subscribe(
-                res => {
-                    this.list = res.content;
-                    this.totalLinhas = res.totalLinhas;
-                }, null,
-                () => {
-                    this.loadingInit = false;
-                });
+        this.filtro.dataInicial = this.filtro.dataInicial ? this.formmatDate(this.filtro.dataInicial) : undefined;
+        this.filtro.dataFinal = this.filtro.dataFinal ? this.formmatDate(this.filtro.dataFinal) : undefined;
+        this.getControlesPresencas();
+    }*/
+
+    getControlesPresencas() {
+        if(!this.loadingInit) {
+            this.loadingInit = true;
+            this.pagina = 1;
+
+            this.api.prep(
+                'administracao',
+                'controlePresenca',
+                'selecionar'
+            ).call({
+                pagina: this.pagina,
+                ...this.filtro
+            })
+                .subscribe(
+                    res => {
+                        this.list = res.content;
+                        this.totalLinhas = res.totalLinhas;
+                    }, null,
+                    () => {
+                        this.loadingInit = false;
+                    });
+        }
+
     }
 
     getStatus() {
@@ -82,6 +94,7 @@ export class ListComponent implements OnInit, AfterViewInit {
         ).call()
             .subscribe(res => {
                     this.statusList = res.content;
+                    this.statusList.unshift({id: null, nome: ''})
                 }, null,
                 () => {
 
@@ -90,7 +103,7 @@ export class ListComponent implements OnInit, AfterViewInit {
     }
 
     getDisciplina() {
-        this.api.prep(
+        /*this.api.prep(
             'administracao',
             'disciplina',
             'selecionar'
@@ -101,11 +114,18 @@ export class ListComponent implements OnInit, AfterViewInit {
                 () => {
 
                 }
-            );
+            );*/
+
+        this.disciplinas = [
+            {id: null, nome: ''},
+            {id: 1234, nome: 'Produção de Bugs'},
+            {id: 4567, nome: 'Filosofia com Piton'},
+            {id: 8910, nome: 'Batata'}
+        ];
     }
 
     getTurma() {
-        this.api.prep(
+       /* this.api.prep(
             'administracao',
             'turma',
             'selecionar'
@@ -116,7 +136,14 @@ export class ListComponent implements OnInit, AfterViewInit {
                 () => {
 
                 }
-            );
+            );*/
+
+        this.turmas = [
+            {id: null, nome: '', semestre: null},
+            {id: 237, nome: '4º SEM Sistemas de Informação', semestre: 4},
+            {id: 310, nome: '4º SEM Engenharia de Software', semestre: 4},
+            {id: 123, nome: '2º SEM Batata', semestre: 2}
+        ]
     }
 
     /*TODO

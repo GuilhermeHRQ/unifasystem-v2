@@ -1,14 +1,166 @@
-<div class="ui-s480">
-  <ui-card class="elevate-on-toolbar">
-    <ui-toolbar class="flat">
-      <span class="title">Presença</span>
-    </ui-toolbar>
-    <ui-card-content>
-      <ui-select #selectField="ngModel" name="test" [(ngModel)]="test" [chosen]="true" [options]="names" value="id" label="nome">
-      </ui-select>
-      <div class="ui-flex-container">
-          
-      </div>
-    </ui-card-content>
-  </ui-card>
+<div class="ui-s840">
+    <ui-card class="elevate-on-toolbar">
+        <ui-toolbar class="flat">
+            <button class="ui-button flat icon" uiRipple (click)="router.navigate(['controle-presenca'])">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            <span class="title">{{addingNew ? 'Novo controle de presenças' : 'Alterando ' + (info.nome || 'controle de presenças')}}</span>
+            <div class="align-right">
+                <button *ngIf="!addingNew" class="ui-button flat icon" type="button" uiRipple
+                        [uiMenuTrigger]="menuCancelar" align="right">
+                    <i class="material-icons">delete</i>
+                </button>
+            </div>
+        </ui-toolbar>
+        <ui-card-content>
+            <form #formControle="ngForm" class="ui-validate on-dirty on-submit" (submit)="onSubmit()">
+                <div class="ui-flex-container break-on-s600">
+                    <ui-input-container>
+                        <ui-select #inputTurma="ngModel" id="turma" name="turma" [(ngModel)]="info.idTurma"
+                                   [chosen]="true" [options]="turmas" value="id" label="nome" uiInput
+                                   (blur)="getSemestre()" required>
+                        </ui-select>
+                        <label for="turma"> Turma </label>
+                        <div class="ui-messages">
+                            <div *ngIf="inputTurma.errors && inputTurma.dirty">
+                                <div class="ui-message error"
+                                     [hidden]="!inputTurma.pristine && !inputTurma.errors.required">Por favor, informe a
+                                    turma
+                                </div>
+                            </div>
+                        </div>
+                    </ui-input-container>
+
+                    <ui-input-container *ngIf="info.idTurma">
+                        <ui-select #inputDisciplinas="ngModel" id="disciplina" name="disciplina"
+                                   [(ngModel)]="info.idDisciplina"
+                                   [chosen]="true" [options]="disciplinas" value="id" label="nome" uiInput>
+                        </ui-select>
+                        <label for="disciplina"> Disciplina </label>
+                        <div class="ui-messages">
+                            <div *ngIf="inputDisciplinas.errors && inputDisciplinas.dirty">
+                                <div class="ui-message error"
+                                     [hidden]="!inputDisciplinas.pristine && !inputDisciplinas.errors.required">Por
+                                    favor, informe a disciplina
+                                </div>
+                            </div>
+                        </div>
+                    </ui-input-container>
+                </div>
+
+                <div class="ui-flex-container break-on-s600">
+                    <div class="ui-flex-container break-on-s480">
+                        <ui-input-container>
+                            <input #inputSemestre="ngModel" type="text" [(ngModel)]="info.semestre" name="inputSemestre"
+                                   uiInput required uiMaskInteger="integer" readonly>
+                            <label>Semestre</label>
+                            <div class="ui-messages">
+                                <div *ngIf="inputSemestre.errors && inputSemestre.dirty">
+                                    <div class="ui-message error"
+                                         [hidden]="!inputSemestre.pristine && !inputSemestre.errors.required">Por favor,
+                                        informe o semestre
+                                    </div>
+                                </div>
+                            </div>
+                        </ui-input-container>
+
+                        <ui-input-container>
+                            <ui-select #inputStatus="ngModel" id="select" name="status" [(ngModel)]="info.idStatus"
+                                       [chosen]="false"
+                                       [options]="status" value="id" label="descricao" uiInput
+                                       style="pointer-events: none;">
+                            </ui-select>
+                            <label for="select"> Status </label>
+                        </ui-input-container>
+                    </div>
+                    <div class="ui-flex-container break-on-s480">
+                        <ui-input-container>
+                            <input type="text"
+                                   uiInput
+                                   [(ngModel)]="info.horaAbertura"
+                                   name="horaAbertura"
+                                   uiTimePicker="horaAberturaTimePicker"
+                                   uiMaskTime
+                                   #horaAbertura="ngModel" [maxTime]="info.horaFechamento" required>
+                            <label>Hora Abertura</label>
+                            <div class="ui-messages">
+                                <div *ngIf="horaAbertura.errors && horaAbertura.dirty">
+                                    <div class="ui-message error"
+                                         [hidden]="!horaAbertura.pristine && !horaAbertura.errors.required">Por favor,
+                                        informe a hora de abertura
+                                    </div>
+                                    <div class="ui-message error"
+                                         [hidden]="!horaAbertura.pristine && !horaAbertura.errors.maxTime">A hora de
+                                        abertura deve ser menor que a de fechamento
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="icon">
+                                <button class="ui-button icon flat" uiTimePickerCaller="horaAberturaTimePicker">
+                                    <i class="material-icons">access_time</i>
+                                </button>
+                            </div>
+                        </ui-input-container>
+                        <ui-input-container>
+                            <input type="text"
+                                   uiInput
+                                   [(ngModel)]="info.horaFechamento"
+                                   name="horaFechamento"
+                                   uiTimePicker="horaFechamentoTimePicker"
+                                   uiMaskTime
+                                   #horaFechamento="ngModel" [minTime]="info.horaAbertura" required>
+                            <label>Hora Fechamento</label>
+                            <div class="ui-messages">
+                                <div *ngIf="horaFechamento.errors && horaFechamento.dirty">
+                                    <div class="ui-message error"
+                                         [hidden]="!horaFechamento.pristine && !horaFechamento.errors.required">Por
+                                        favor, informe a hora de fechamento
+                                    </div>
+                                    <div class="ui-message error"
+                                         [hidden]="!horaFechamento.pristine && !horaFechamento.errors.minTime">A hora de
+                                        fechamento deve ser maior que a de abertura
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="icon">
+                                <button class="ui-button icon flat" uiTimePickerCaller="horaFechamentoTimePicker">
+                                    <i class="material-icons">access_time</i>
+                                </button>
+                            </div>
+                        </ui-input-container>
+                    </div>
+                </div>
+
+                <ui-input-container>
+                    <textarea [(ngModel)]="info.conteudo" name="inputConteudo" rows="2" uiInput
+                              uiMaxlength="250" #inputConteudo="ngModel" autosize></textarea>
+                    <label>Conteúdo</label>
+                    <div class="ui-messages">
+                        <div *ngIf="inputConteudo.errors && inputConteudo.dirty">
+                            <div class="ui-message error"
+                                 [hidden]="!inputConteudo.pristine && !inputConteudo.errors.required">Por favor, informe
+                                o conteúdo lecionado
+                            </div>
+                        </div>
+                        <div class="ui-message counter"
+                             [ngClass]="{'error': info.conteudo && info.conteudo.length > 250}">
+                            {{info.conteudo ? info.conteudo.length : 0}}/250
+                        </div>
+                    </div>
+                </ui-input-container>
+            </form>
+        </ui-card-content>
+    </ui-card>
 </div>
+
+<ui-menu #menuCancelar>
+    <div class="ui-menu-content size-2x">
+        <ui-subheader>Deseja cancelar?</ui-subheader>
+        <div class="ui-menu-item" uiRipple>
+            Sim
+        </div>
+        <div class="ui-menu-item" uiRipple>
+            Não
+        </div>
+    </div>
+</ui-menu>

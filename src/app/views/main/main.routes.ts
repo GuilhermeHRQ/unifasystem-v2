@@ -15,8 +15,8 @@ import { CursoComponent } from './curso/curso.component';
 import { CursoListComponent } from './curso/list/curso-list.component';
 import { CursoInfoComponent } from './curso/info/curso-info.component';
 import { ControlePresencaComponent } from './controle-presenca/controle-presenca.component';
-import { ListComponent } from './controle-presenca/list/list.component';
-import { InfoComponent } from './controle-presenca/info/info.component';
+import {ControlePresencaListComponent, ListComponent} from './controle-presenca/list/list.component';
+import {ControlePresencaInfoComponent, InfoComponent} from './controle-presenca/info/info.component';
 
 export const MAIN_ROUTES: Routes = [{
     path: '',
@@ -68,11 +68,10 @@ export const MAIN_ROUTES: Routes = [{
             path: 'controle-presenca',
             component: ControlePresencaComponent,
             children: [
-                { path: '', component: ListComponent },
-                { path: 'novo', component: InfoComponent },
+                { path: '', component: ControlePresencaListComponent },
+                { path: 'novo', component: ControlePresencaInfoComponent },
                 { path: 'nova', redirectTo: 'novo' },
-                { path: ':id', component: InfoComponent },
-                { path: 'presenca', component: AlunoComponent }
+                { path: ':id', component: ControlePresencaInfoComponent }
             ]
         }
     ]
