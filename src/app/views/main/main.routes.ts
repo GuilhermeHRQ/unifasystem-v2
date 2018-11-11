@@ -15,8 +15,8 @@ import { CursoComponent } from './curso/curso.component';
 import { CursoListComponent } from './curso/list/curso-list.component';
 import { CursoInfoComponent } from './curso/info/curso-info.component';
 import { ControlePresencaComponent } from './controle-presenca/controle-presenca.component';
-import {ControlePresencaListComponent, ListComponent} from './controle-presenca/list/list.component';
-import {ControlePresencaInfoComponent, InfoComponent} from './controle-presenca/info/info.component';
+import {ControlePresencaListComponent} from './controle-presenca/list/list.component';
+import {ControlePresencaInfoComponent} from './controle-presenca/info/info.component';
 
 export const MAIN_ROUTES: Routes = [{
     path: '',
