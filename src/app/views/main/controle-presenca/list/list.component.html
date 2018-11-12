@@ -97,7 +97,7 @@
                         Data cadastro
                     </th>
                 </tr>
-                <tr class="empty" *ngFor="let item of list">
+                <tr class="empty" *ngFor="let item of list" [routerLink]="[item.id]">
                     <ng-template [ngIf]="!loadingInit">
                         <td> {{ item.status }}</td>
                         <td> {{ item.nomeTurma }}</td>

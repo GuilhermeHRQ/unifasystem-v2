@@ -6,7 +6,7 @@
             </button>
             <span class="title">{{addingNew ? 'Novo controle de presenças' : 'Alterando ' + (info.nome || 'controle de presenças')}}</span>
             <div class="align-right">
-                <button *ngIf="!addingNew" class="ui-button flat icon" type="button" uiRipple
+                <button *ngIf="!addingNew && this.info.idStatus !== 4" class="ui-button flat icon" type="button" uiRipple
                         [uiMenuTrigger]="menuCancelar" align="right">
                     <i class="material-icons">delete</i>
                 </button>
@@ -14,65 +14,89 @@
         </ui-toolbar>
         <ui-card-content>
             <form #formControle="ngForm" class="ui-validate on-dirty on-submit" (submit)="onSubmit()">
-                <div class="ui-flex-container break-on-s600">
-                    <ui-input-container>
-                        <ui-select #inputTurma="ngModel" id="turma" name="turma" [(ngModel)]="info.idTurma"
-                                   [chosen]="true" [options]="turmas" value="id" label="nome" uiInput
-                                   (blur)="getSemestre()" required>
-                        </ui-select>
-                        <label for="turma"> Turma </label>
-                        <div class="ui-messages">
-                            <div *ngIf="inputTurma.errors && inputTurma.dirty">
-                                <div class="ui-message error"
-                                     [hidden]="!inputTurma.pristine && !inputTurma.errors.required">Por favor, informe a
-                                    turma
-                                </div>
-                            </div>
-                        </div>
-                    </ui-input-container>
-
-                    <ui-input-container *ngIf="info.idTurma">
-                        <ui-select #inputDisciplinas="ngModel" id="disciplina" name="disciplina"
-                                   [(ngModel)]="info.idDisciplina"
-                                   [chosen]="true" [options]="disciplinas" value="id" label="nome" uiInput>
-                        </ui-select>
-                        <label for="disciplina"> Disciplina </label>
-                        <div class="ui-messages">
-                            <div *ngIf="inputDisciplinas.errors && inputDisciplinas.dirty">
-                                <div class="ui-message error"
-                                     [hidden]="!inputDisciplinas.pristine && !inputDisciplinas.errors.required">Por
-                                    favor, informe a disciplina
-                                </div>
-                            </div>
-                        </div>
-                    </ui-input-container>
-                </div>
-
-                <div class="ui-flex-container break-on-s600">
-                    <div class="ui-flex-container break-on-s480">
+                <fieldset [disabled]="!addingNew">
+                    <div class="ui-flex-container break-on-s600">
                         <ui-input-container>
-                            <input #inputSemestre="ngModel" type="text" [(ngModel)]="info.semestre" name="inputSemestre"
-                                   uiInput required uiMaskInteger="integer" readonly>
-                            <label>Semestre</label>
+                            <ui-select #inputTurma="ngModel" id="turma" name="turma" [(ngModel)]="info.idTurma"
+                                       [chosen]="true" [options]="turmas" value="id" label="nome" uiInput
+                                       (ngModelChange)="getSemestre()" required>
+                            </ui-select>
+                            <label for="turma"> Turma </label>
                             <div class="ui-messages">
-                                <div *ngIf="inputSemestre.errors && inputSemestre.dirty">
+                                <div *ngIf="inputTurma.errors && inputTurma.dirty">
                                     <div class="ui-message error"
-                                         [hidden]="!inputSemestre.pristine && !inputSemestre.errors.required">Por favor,
-                                        informe o semestre
+                                         [hidden]="!inputTurma.pristine && !inputTurma.errors.required">Por favor,
+                                        informe a
+                                        turma
                                     </div>
                                 </div>
                             </div>
                         </ui-input-container>
 
+                        <ui-input-container *ngIf="info.idTurma">
+                            <ui-select #inputDisciplinas="ngModel" id="disciplina" name="disciplina"
+                                       [(ngModel)]="info.idDisciplina"
+                                       [chosen]="true" [options]="disciplinas" value="id" label="nome" uiInput
+                                       (ngModelChange)="getNomeDisciplina()">
+                            </ui-select>
+                            <label for="disciplina"> Disciplina </label>
+                            <div class="ui-messages">
+                                <div *ngIf="inputDisciplinas.errors && inputDisciplinas.dirty">
+                                    <div class="ui-message error"
+                                         [hidden]="!inputDisciplinas.pristine && !inputDisciplinas.errors.required">Por
+                                        favor, informe a disciplina
+                                    </div>
+                                </div>
+                            </div>
+                        </ui-input-container>
+                    </div>
+
+                    <div class="ui-flex-container break-on-s600">
                         <ui-input-container>
-                            <ui-select #inputStatus="ngModel" id="select" name="status" [(ngModel)]="info.idStatus"
+                            <ui-select #inputStatus="ngModel" name="status" [(ngModel)]="info.idStatus"
                                        [chosen]="false"
                                        [options]="status" value="id" label="descricao" uiInput
                                        style="pointer-events: none;">
                             </ui-select>
-                            <label for="select"> Status </label>
+                            <label> Status </label>
                         </ui-input-container>
+                        <div class="ui-flex-container break-on-s480">
+                            <ui-input-container>
+                                <input #inputSemestre="ngModel" type="text" [(ngModel)]="info.semestre"
+                                       name="inputSemestre"
+                                       uiInput required uiMaskInteger="integer" readonly>
+                                <label>Semestre</label>
+                                <div class="ui-messages">
+                                    <div *ngIf="inputSemestre.errors && inputSemestre.dirty">
+                                        <div class="ui-message error"
+                                             [hidden]="!inputSemestre.pristine && !inputSemestre.errors.required">Por
+                                            favor,
+                                            informe o semestre
+                                        </div>
+                                    </div>
+                                </div>
+                            </ui-input-container>
+
+                            <ui-input-container>
+                                <ui-select #inputQuantidadePresencas="ngModel" name="inputQuantidadePresencas"
+                                           [(ngModel)]="info.quantidadePresencas"
+                                           [chosen]="false"
+                                           [options]="quantidadePresencas" value="qtd" label="qtd" uiInput>
+                                </ui-select>
+                                <label> Quantidade de presenças </label>
+                                <div class="ui-messages">
+                                    <div *ngIf="inputQuantidadePresencas.errors && inputQuantidadePresencas.dirty">
+                                        <div class="ui-message error"
+                                             [hidden]="!inputQuantidadePresencas.pristine && !inputQuantidadePresencas.errors.required">
+                                            Por favor,
+                                            informe a quantidade de presenças
+                                        </div>
+                                    </div>
+                                </div>
+                            </ui-input-container>
+                        </div>
                     </div>
+
                     <div class="ui-flex-container break-on-s480">
                         <ui-input-container>
                             <input type="text"
@@ -129,11 +153,10 @@
                             </div>
                         </ui-input-container>
                     </div>
-                </div>
-
+                </fieldset>
                 <ui-input-container>
                     <textarea [(ngModel)]="info.conteudo" name="inputConteudo" rows="2" uiInput
-                              uiMaxlength="250" #inputConteudo="ngModel" autosize></textarea>
+                              uiMaxlength="250" #inputConteudo="ngModel" autosize [disabled]="this.info.idStatus === 4"></textarea>
                     <label>Conteúdo</label>
                     <div class="ui-messages">
                         <div *ngIf="inputConteudo.errors && inputConteudo.dirty">
@@ -148,15 +171,21 @@
                         </div>
                     </div>
                 </ui-input-container>
+                <div class="ui-fab-container" *ngIf="this.info.idStatus !== 4">
+                    <button class="ui-button success fab" uiRipple>
+                        <i class="material-icons">check</i>
+                    </button>
+                </div>
             </form>
         </ui-card-content>
     </ui-card>
+
 </div>
 
 <ui-menu #menuCancelar>
     <div class="ui-menu-content size-2x">
         <ui-subheader>Deseja cancelar?</ui-subheader>
-        <div class="ui-menu-item" uiRipple>
+        <div class="ui-menu-item" uiRipple (click)="cancelarControle()">
             Sim
         </div>
         <div class="ui-menu-item" uiRipple>
