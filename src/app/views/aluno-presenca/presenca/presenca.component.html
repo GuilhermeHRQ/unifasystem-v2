@@ -1,0 +1,19 @@
+<div class="core">
+    <div class="logo">
+        <img src="assets/images/Uni_FACEF_MUNICIPAL.png" alt="Cronos logo" title="Cronos logo">
+    </div>
+    <ui-card>
+        <div class="ui-progress accent" [class.hide]="!loading">
+            <div class="indeterminate"></div>
+        </div>
+        <ui-toolbar class="flat">
+            <span class="title">Insira seu código</span>
+        </ui-toolbar>
+       <ui-card-content>
+        <ui-input-container>
+            <input type="number" [(ngModel)]="codigo" uiInput>
+            <label>Código do aluno</label>
+        </ui-input-container>
+       </ui-card-content>
+    </ui-card>
+</div>

@@ -1,0 +1,35 @@
+@import "~ng-smn-ui/lib/core/variables";
+
+/deep/ app-root, :host {
+    height: 100%;
+}
+
+:host {
+    background-color: lightskyblue;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    > .core {
+        max-width: 420px;
+        width: 100%;
+
+        .logo {
+            width: 280px;
+            margin: 0 auto;
+        }
+
+        ui-card {
+            position: relative;
+            overflow: hidden;
+
+            .ui-progress {
+                position: absolute;
+            }        
+        }
+    }
+
+    .avatar {
+        background-color: #3f51b5;
+    }
+}

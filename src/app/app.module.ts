@@ -7,6 +7,7 @@ import { MainModule } from './views/main/main.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AuthModule } from './views/auth/auth.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { AlunoPresencaModule } from './views/aluno-presenca/aluno-presenca.module';
 
 @NgModule({
     declarations: [
@@ -15,6 +16,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     imports: [
         SharedModule,
         AppRoutingModule,
+        AlunoPresencaModule,
         ErrorModule,
         MainModule,
         AuthModule,
