@@ -9,11 +9,16 @@
         <ui-toolbar class="flat">
             <span class="title">Insira seu código</span>
         </ui-toolbar>
-       <ui-card-content>
-        <ui-input-container>
-            <input type="number" [(ngModel)]="codigo" uiInput>
-            <label>Código do aluno</label>
-        </ui-input-container>
-       </ui-card-content>
+        <ui-card-content>
+            <form #form="ngForm" class="ui-validate on-dirty on-submit" (submit)="onSubmit(form)">
+                <ui-input-container>
+                    <input type="number" [(ngModel)]="codigo" uiInput #inputCodigo="ngModel" name="codigo" required>
+                    <label>Código do aluno</label>
+                </ui-input-container>
+                <div class="ui-button-container">
+                    <button type="submit" class="ui-button full accent">Inserir presença</button>
+                </div>
+            </form>
+        </ui-card-content>
     </ui-card>
 </div>
