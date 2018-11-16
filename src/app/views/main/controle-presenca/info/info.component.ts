@@ -1,7 +1,7 @@
-import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ApiService } from '../../../../core/api/api.service';
-import { UiElement, UiSnackbar, UiToolbarService } from 'ng-smn-ui';
+import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {ApiService} from '../../../../core/api/api.service';
+import {UiElement, UiSnackbar, UiToolbarService} from 'ng-smn-ui';
 
 @Component({
     selector: 'app-controle-presenca-info',
@@ -17,6 +17,7 @@ export class ControlePresencaInfoComponent implements OnInit, AfterViewInit, OnD
     quantidadePresencas: any[];
     loading: boolean;
     alunos;
+    presencas;
     @ViewChild('formControle') formControle;
 
     constructor(
@@ -31,34 +32,8 @@ export class ControlePresencaInfoComponent implements OnInit, AfterViewInit, OnD
         this.turmas = [];
         this.disciplinas = [];
         this.status = [];
-        this.alunos = [
-            {
-                nome: 'Miguel Aleixo',
-                qtdPresenca: [true, true]
-            },
-            {
-                nome: 'Miguel Aleixo',
-                qtdPresenca: [true, true]
-            },
-            {
-                nome: 'Miguel Aleixo',
-                qtdPresenca: [true, true]
-            },
-            {
-                nome: 'Miguel Aleixo',
-                qtdPresenca: [true, true]
-            },
-            {
-                nome: 'Miguel Aleixo',
-                qtdPresenca: [true, true]
-            },
-            {
-                nome: 'Miguel Aleixo',
-                presente: true
-            },
-        ]
 
-        this.quantidadePresencas = [{ qtd: 2 }, { qtd: 4 }];
+        this.quantidadePresencas = [{qtd: 2}, {qtd: 4}];
     }
 
     ngOnInit() {
@@ -88,14 +63,20 @@ export class ControlePresencaInfoComponent implements OnInit, AfterViewInit, OnD
     getInfo() {
         this.api
             .prep('administracao', 'controlePresenca', 'selecionarPorId')
-            .call({ id: this.activedRoute.snapshot.params['id'] })
+            .call({id: this.activedRoute.snapshot.params['id']})
             .subscribe(res => {
                 this.info = res.content;
+                this.alunos = this.info.alunos;
+                this.presencas = Array(this.info.quantidadePresencas).fill(false);
             }, err => {
                 UiSnackbar.show({
                     text: err.message
                 });
-            })
+            });
+    }
+
+    getPresenca() {
+        console.log(this.alunos);
     }
 
 
@@ -131,6 +112,24 @@ export class ControlePresencaInfoComponent implements OnInit, AfterViewInit, OnD
                     }, () => {
                         this.loading = false;
                     });
+            } else {
+                this.api
+                    .prep('administracao', 'controlePresenca', 'atualizar')
+                    .call(this.info)
+                    .subscribe((res) => {
+                        UiSnackbar.show({
+                            text: 'Controle atualizado com sucesso!',
+                            center: true
+                        });
+
+                        this.router.navigate(['/controle-presenca/']);
+                    }, (err) => {
+                        UiSnackbar.show({
+                            text: err.message
+                        });
+                    }, () => {
+                        this.loading = false;
+                    });
             }
         }
     }
@@ -144,14 +143,14 @@ export class ControlePresencaInfoComponent implements OnInit, AfterViewInit, OnD
                     'administracao',
                     'disciplina',
                     'selecionar'
-                ).call({ idTurma: this.info.idTurma })
+                ).call({idTurma: this.info.idTurma})
                 .subscribe(res => {
-                    this.disciplinas = res.content;
-                    if (this.disciplinas.length == 1) {
-                        this.info.idDisciplina = this.disciplinas[0].id;
-                        this.info.nomeDisciplina = this.disciplinas[0].nome;
-                    }
-                }, null,
+                        this.disciplinas = res.content;
+                        if (this.disciplinas.length === 1) {
+                            this.info.idDisciplina = this.disciplinas[0].id;
+                            this.info.nomeDisciplina = this.disciplinas[0].nome;
+                        }
+                    }, null,
                     () => {
                         this.disciplinas.loading = false;
                     }
@@ -167,8 +166,8 @@ export class ControlePresencaInfoComponent implements OnInit, AfterViewInit, OnD
                 'selecionar'
             ).call()
             .subscribe(res => {
-                this.turmas = res.content;
-            }, null,
+                    this.turmas = res.content;
+                }, null,
                 () => {
 
                 }
@@ -183,14 +182,14 @@ export class ControlePresencaInfoComponent implements OnInit, AfterViewInit, OnD
                 'selecionarSimples'
             ).call()
             .subscribe(res => {
-                this.status = res.content;
-            }
+                    this.status = res.content;
+                }
             );
     }
 
     getSemestre() {
         this.turmas.forEach(item => {
-            if (item.id == this.info.idTurma) {
+            if (item.id === this.info.idTurma) {
                 this.info.semestre = +item.semestre;
                 this.info.nomeTurma = item.nome;
             }
@@ -205,7 +204,7 @@ export class ControlePresencaInfoComponent implements OnInit, AfterViewInit, OnD
 
     getNomeDisciplina() {
         this.disciplinas.forEach(item => {
-            if (item.id == this.info.idDisciplina) {
+            if (item.id === this.info.idDisciplina) {
                 this.info.nomeDisciplina = item.nome;
             }
         });
@@ -214,7 +213,7 @@ export class ControlePresencaInfoComponent implements OnInit, AfterViewInit, OnD
     cancelarControle() {
         this.api
             .prep('administracao', 'controlePresenca', 'cancelar')
-            .call({ id: this.info.id })
+            .call({id: this.info.id})
             .subscribe(res => {
                 UiSnackbar.show({
                     text: res.message
@@ -224,6 +223,6 @@ export class ControlePresencaInfoComponent implements OnInit, AfterViewInit, OnD
                 UiSnackbar.show({
                     text: err.message
                 });
-            })
+            });
     }
 }

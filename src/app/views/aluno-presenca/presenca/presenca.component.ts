@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, OnInit, ElementRef } from '@angular/core';
-import {UiElement, UiSnackbar} from 'ng-smn-ui';
+import {UiElement, UiSnackbar, UiToolbarService} from 'ng-smn-ui';
 import { ApiService } from '../../../core/api/api.service';
 import { environment } from '../../../../environments/environment';
 
@@ -12,7 +12,8 @@ export class PresencaComponent implements OnInit, AfterViewInit {
     codigo: number;
 
     constructor(private element: ElementRef,
-                private api: ApiService) {
+                private api: ApiService,
+                private toolbar: UiToolbarService) {
     }
 
     onSubmit(form) {
@@ -38,12 +39,13 @@ export class PresencaComponent implements OnInit, AfterViewInit {
                     center: true
                 });
             }, err => {
-                console.log(err)
+                UiSnackbar.show({
+                    text: err.message,
+                    center: true
+                });
             }, () => {
 
-            })
-        
-
+            });
     }
 
     ngOnInit() {

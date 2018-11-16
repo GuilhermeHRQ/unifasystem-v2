@@ -6,7 +6,8 @@
             </button>
             <span class="title">{{addingNew ? 'Novo controle de presenças' : 'Alterando ' + (info.nome || 'controle de presenças')}}</span>
             <div class="align-right">
-                <button *ngIf="!addingNew && this.info.idStatus !== 4" class="ui-button flat icon" type="button" uiRipple
+                <button *ngIf="!addingNew && this.info.idStatus !== 4" class="ui-button flat icon" type="button"
+                        uiRipple
                         [uiMenuTrigger]="menuCancelar" align="right">
                     <i class="material-icons">delete</i>
                 </button>
@@ -156,7 +157,8 @@
                 </fieldset>
                 <ui-input-container>
                     <textarea [(ngModel)]="info.conteudo" name="inputConteudo" rows="2" uiInput
-                              uiMaxlength="250" #inputConteudo="ngModel" autosize [disabled]="this.info.idStatus === 4"></textarea>
+                              uiMaxlength="250" #inputConteudo="ngModel" autosize
+                              [disabled]="this.info.idStatus === 4"></textarea>
                     <label>Conteúdo</label>
                     <div class="ui-messages">
                         <div *ngIf="inputConteudo.errors && inputConteudo.dirty">
@@ -173,30 +175,34 @@
                 </ui-input-container>
                 <div class="ui-fab-container" *ngIf="this.info.idStatus !== 4">
                     <button class="ui-button success fab" uiRipple>
-                        <i class="material-icons">check</i>
+                        <i class="material-icons">{{ addingNew ? 'check' : 'edit'}}</i>
                     </button>
                 </div>
             </form>
         </ui-card-content>
     </ui-card>
+
     <div style="height: 32px"></div>
-    <ui-card class="elevate-on-toolbar">
+
+    <ui-card>
         <ui-toolbar class="flat">
-          <span class="title">Alunos presentes</span>
+            <span class="title">Alunos presentes</span>
         </ui-toolbar>
-        <ui-list [list]="menuList" [item-model]="itemModel">
-          <div class="ui-list-item multi-line" *ngFor="let aluno of alunos">
-            <div class="lines">
-              {{aluno.nome}}
+        <ul class="ui-list">
+            <div class="ui-list-item multi-line" *ngFor="let aluno of alunos">
+                <div class="lines">
+                    {{aluno.nomeAluno}}
+                </div>
+                <div class="action" *ngFor="let presenca of presencas">
+                    <ui-option>
+                        <input type="checkbox" [(ngModel)]="tes" [checked]="getPresenca()">
+                    </ui-option>
+                </div>
             </div>
-            <div class="action">
-              <ui-option>
-                <input type="checkbox" [(ngModel)]="checkboxTest" [checked]="checkboxTest">
-              </ui-option>
-            </div>
-          </div>
-        </ui-list>
-      </ui-card>
+        </ul>
+    </ui-card>
+
+    <div style="height: 32px"></div>
 
 </div>
 
