@@ -1,7 +1,7 @@
-import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {ApiService} from '../../../../core/api/api.service';
-import {UiElement, UiSnackbar, UiToolbarService} from 'ng-smn-ui';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ApiService } from '../../../../core/api/api.service';
+import { UiElement, UiSnackbar, UiToolbarService } from 'ng-smn-ui';
 
 @Component({
     selector: 'app-controle-presenca-info',
@@ -16,6 +16,7 @@ export class ControlePresencaInfoComponent implements OnInit, AfterViewInit, OnD
     status: any[];
     quantidadePresencas: any[];
     loading: boolean;
+    alunos;
     @ViewChild('formControle') formControle;
 
     constructor(
@@ -30,8 +31,34 @@ export class ControlePresencaInfoComponent implements OnInit, AfterViewInit, OnD
         this.turmas = [];
         this.disciplinas = [];
         this.status = [];
+        this.alunos = [
+            {
+                nome: 'Miguel Aleixo',
+                qtdPresenca: [true, true]
+            },
+            {
+                nome: 'Miguel Aleixo',
+                qtdPresenca: [true, true]
+            },
+            {
+                nome: 'Miguel Aleixo',
+                qtdPresenca: [true, true]
+            },
+            {
+                nome: 'Miguel Aleixo',
+                qtdPresenca: [true, true]
+            },
+            {
+                nome: 'Miguel Aleixo',
+                qtdPresenca: [true, true]
+            },
+            {
+                nome: 'Miguel Aleixo',
+                presente: true
+            },
+        ]
 
-        this.quantidadePresencas = [{qtd: 2}, {qtd: 4}];
+        this.quantidadePresencas = [{ qtd: 2 }, { qtd: 4 }];
     }
 
     ngOnInit() {
@@ -61,7 +88,7 @@ export class ControlePresencaInfoComponent implements OnInit, AfterViewInit, OnD
     getInfo() {
         this.api
             .prep('administracao', 'controlePresenca', 'selecionarPorId')
-            .call({id: this.activedRoute.snapshot.params['id']})
+            .call({ id: this.activedRoute.snapshot.params['id'] })
             .subscribe(res => {
                 this.info = res.content;
             }, err => {
@@ -73,7 +100,7 @@ export class ControlePresencaInfoComponent implements OnInit, AfterViewInit, OnD
 
 
     onSubmit() {
-        if(!this.loading) {
+        if (!this.loading) {
             for (const control in this.formControle.controls) {
                 if (this.formControle.controls.hasOwnProperty(control)) {
                     this.formControle.controls[control].markAsTouched();
@@ -81,13 +108,13 @@ export class ControlePresencaInfoComponent implements OnInit, AfterViewInit, OnD
                 }
             }
 
-            if(this.formControle.invalid) {
+            if (this.formControle.invalid) {
                 UiElement.focus(this.element.nativeElement.querySelector('form .ng-invalid'));
                 return false;
             }
 
             this.loading = true;
-            if(this.addingNew) {
+            if (this.addingNew) {
                 this.api
                     .prep('administracao', 'controlePresenca', 'inserir')
                     .call(this.info)
@@ -117,14 +144,14 @@ export class ControlePresencaInfoComponent implements OnInit, AfterViewInit, OnD
                     'administracao',
                     'disciplina',
                     'selecionar'
-                ).call({idTurma: this.info.idTurma})
+                ).call({ idTurma: this.info.idTurma })
                 .subscribe(res => {
-                        this.disciplinas = res.content;
-                        if(this.disciplinas.length == 1) {
-                            this.info.idDisciplina = this.disciplinas[0].id;
-                            this.info.nomeDisciplina = this.disciplinas[0].nome;
-                        }
-                    }, null,
+                    this.disciplinas = res.content;
+                    if (this.disciplinas.length == 1) {
+                        this.info.idDisciplina = this.disciplinas[0].id;
+                        this.info.nomeDisciplina = this.disciplinas[0].nome;
+                    }
+                }, null,
                     () => {
                         this.disciplinas.loading = false;
                     }
@@ -140,8 +167,8 @@ export class ControlePresencaInfoComponent implements OnInit, AfterViewInit, OnD
                 'selecionar'
             ).call()
             .subscribe(res => {
-                    this.turmas = res.content;
-                }, null,
+                this.turmas = res.content;
+            }, null,
                 () => {
 
                 }
@@ -156,8 +183,8 @@ export class ControlePresencaInfoComponent implements OnInit, AfterViewInit, OnD
                 'selecionarSimples'
             ).call()
             .subscribe(res => {
-                    this.status = res.content;
-                }
+                this.status = res.content;
+            }
             );
     }
 
@@ -169,7 +196,7 @@ export class ControlePresencaInfoComponent implements OnInit, AfterViewInit, OnD
             }
         });
 
-        if(this.addingNew) {
+        if (this.addingNew) {
             this.info.idDisciplina = null;
             this.getDisciplina();
         }
@@ -178,7 +205,7 @@ export class ControlePresencaInfoComponent implements OnInit, AfterViewInit, OnD
 
     getNomeDisciplina() {
         this.disciplinas.forEach(item => {
-            if(item.id == this.info.idDisciplina) {
+            if (item.id == this.info.idDisciplina) {
                 this.info.nomeDisciplina = item.nome;
             }
         });
@@ -187,7 +214,7 @@ export class ControlePresencaInfoComponent implements OnInit, AfterViewInit, OnD
     cancelarControle() {
         this.api
             .prep('administracao', 'controlePresenca', 'cancelar')
-            .call({id: this.info.id})
+            .call({ id: this.info.id })
             .subscribe(res => {
                 UiSnackbar.show({
                     text: res.message

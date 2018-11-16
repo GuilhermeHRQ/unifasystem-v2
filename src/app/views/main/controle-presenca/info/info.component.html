@@ -81,7 +81,7 @@
                                 <ui-select #inputQuantidadePresencas="ngModel" name="inputQuantidadePresencas"
                                            [(ngModel)]="info.quantidadePresencas"
                                            [chosen]="false"
-                                           [options]="quantidadePresencas" value="qtd" label="qtd" uiInput>
+                                           [options]="quantidadePresencas" value="qtd" label="qtd" required uiInput>
                                 </ui-select>
                                 <label> Quantidade de presenças </label>
                                 <div class="ui-messages">
@@ -179,6 +179,24 @@
             </form>
         </ui-card-content>
     </ui-card>
+    <div style="height: 32px"></div>
+    <ui-card class="elevate-on-toolbar">
+        <ui-toolbar class="flat">
+          <span class="title">Alunos presentes</span>
+        </ui-toolbar>
+        <ui-list [list]="menuList" [item-model]="itemModel">
+          <div class="ui-list-item multi-line" *ngFor="let aluno of alunos">
+            <div class="lines">
+              {{aluno.nome}}
+            </div>
+            <div class="action">
+              <ui-option>
+                <input type="checkbox" [(ngModel)]="checkboxTest" [checked]="checkboxTest">
+              </ui-option>
+            </div>
+          </div>
+        </ui-list>
+      </ui-card>
 
 </div>
 

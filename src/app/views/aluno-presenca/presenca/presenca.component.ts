@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, OnInit, ElementRef } from '@angular/core';
-import {UiElement} from 'ng-smn-ui';
+import {UiElement, UiSnackbar} from 'ng-smn-ui';
 import { ApiService } from '../../../core/api/api.service';
 import { environment } from '../../../../environments/environment';
 
@@ -33,9 +33,12 @@ export class PresencaComponent implements OnInit, AfterViewInit {
             .call()
             .subscribe( res => {
                 console.log(res.content)
+                UiSnackbar.show({
+                    text: res.content.message,
+                    center: true
+                });
             }, err => {
                 console.log(err)
-                UiSnackBar.show()
             }, () => {
 
             })
