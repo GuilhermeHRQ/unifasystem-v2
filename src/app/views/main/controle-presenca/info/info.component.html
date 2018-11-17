@@ -184,7 +184,7 @@
 
     <div style="height: 32px"></div>
 
-    <ui-card>
+    <!--<ui-card>
         <ui-toolbar class="flat">
             <span class="title">Alunos presentes</span>
         </ui-toolbar>
@@ -200,6 +200,48 @@
                 </div>
             </div>
         </ul>
+    </ui-card>-->
+
+    <ui-card>
+        <ui-toolbar class="flat">
+            <span class="title">Alunos presentes</span>
+        </ui-toolbar>
+        <ui-data-table>
+            <tbody>
+            <tr>
+                <th>
+                    Nome
+                </th>
+                <th *ngIf="info.quantidadePresencas === 2">
+                    Aula 1
+                </th>
+                <th *ngIf="info.quantidadePresencas === 2">
+                    Aula 2
+                </th>
+                <th *ngIf="info.quantidadePresencas === 4">
+                    Aula 3
+                </th>
+                <th *ngIf="info.quantidadePresencas === 4">
+                    Aula 4
+                </th>
+            </tr>
+            <tr class="empty" *ngFor="let item of info.alunos; let i = index">
+                <td> {{ item.nomeAluno }}</td>
+                <td *ngFor="let isPresent of item.presencas; let j = index">
+                    <ui-option>
+                        <input type="checkbox" [(ngModel)]="item.presencas[j]">
+                    </ui-option>
+                </td>
+            </tr>
+            <tr>
+                <!--<td colspan="5" *ngIf="!info.alunos.length">
+                    Nenhum dado encontrado.
+                </td>-->
+            </tr>
+            </tbody>
+            <tfoot>
+            </tfoot>
+        </ui-data-table>
     </ui-card>
 
     <div style="height: 32px"></div>

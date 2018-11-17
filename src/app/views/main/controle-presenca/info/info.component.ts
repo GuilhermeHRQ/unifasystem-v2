@@ -76,7 +76,7 @@ export class ControlePresencaInfoComponent implements OnInit, AfterViewInit, OnD
     }
 
     getPresenca() {
-        console.log(this.alunos);
+        // console.log(this.alunos);
     }
 
 
