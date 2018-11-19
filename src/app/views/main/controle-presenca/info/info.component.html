@@ -210,12 +210,15 @@
             <tbody>
             <tr>
                 <th>
+                    Código
+                </th>
+                <th>
                     Nome
                 </th>
-                <th *ngIf="info.quantidadePresencas === 2">
+                <th>
                     Aula 1
                 </th>
-                <th *ngIf="info.quantidadePresencas === 2">
+                <th>
                     Aula 2
                 </th>
                 <th *ngIf="info.quantidadePresencas === 4">
@@ -226,6 +229,7 @@
                 </th>
             </tr>
             <tr class="empty" *ngFor="let item of info.alunos; let i = index">
+             <td> {{ item.idAluno }}</td>
                 <td> {{ item.nomeAluno }}</td>
                 <td *ngFor="let isPresent of item.presencas; let j = index">
                     <ui-option>
@@ -233,11 +237,11 @@
                     </ui-option>
                 </td>
             </tr>
-            <tr>
-                <!--<td colspan="5" *ngIf="!info.alunos.length">
-                    Nenhum dado encontrado.
-                </td>-->
-            </tr>
+            <!-- <tr *ngIf="!info.alunos.length">
+                <td colspan="5">
+                    Nenhum aluno presente.
+                </td>
+            </tr> -->
             </tbody>
             <tfoot>
             </tfoot>
@@ -247,6 +251,10 @@
     <div style="height: 32px"></div>
 
 </div>
+
+
+
+
 
 <ui-menu #menuCancelar>
     <div class="ui-menu-content size-2x">

@@ -75,10 +75,6 @@ export class ControlePresencaInfoComponent implements OnInit, AfterViewInit, OnD
             });
     }
 
-    getPresenca() {
-        // console.log(this.alunos);
-    }
-
 
     onSubmit() {
         if (!this.loading) {
@@ -113,6 +109,7 @@ export class ControlePresencaInfoComponent implements OnInit, AfterViewInit, OnD
                         this.loading = false;
                     });
             } else {
+                console.log('carregando')
                 this.api
                     .prep('administracao', 'controlePresenca', 'atualizar')
                     .call(this.info)
@@ -124,9 +121,7 @@ export class ControlePresencaInfoComponent implements OnInit, AfterViewInit, OnD
 
                         this.router.navigate(['/controle-presenca/']);
                     }, (err) => {
-                        UiSnackbar.show({
-                            text: err.message
-                        });
+                        console.log(err)
                     }, () => {
                         this.loading = false;
                     });

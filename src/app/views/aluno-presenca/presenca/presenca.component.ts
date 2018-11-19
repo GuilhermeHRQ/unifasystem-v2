@@ -10,6 +10,7 @@ import { environment } from '../../../../environments/environment';
 })
 export class PresencaComponent implements OnInit, AfterViewInit {
     codigo: number;
+    loading: boolean;
 
     constructor(private element: ElementRef,
                 private api: ApiService,
@@ -28,6 +29,10 @@ export class PresencaComponent implements OnInit, AfterViewInit {
             UiElement.focus(this.element.nativeElement.querySelector('form .ng-invalid'));
             return false;
         }
+        if(this.loading){
+            return false;
+        }
+        this.loading = true;
 
         this.api
             .http('POST', `${environment.AUTH_API}/aluno-presenca/${this.codigo}`)
@@ -44,7 +49,7 @@ export class PresencaComponent implements OnInit, AfterViewInit {
                     center: true
                 });
             }, () => {
-
+                this.loading = false;
             });
     }
 
