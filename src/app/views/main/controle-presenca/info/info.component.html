@@ -215,10 +215,17 @@
                 <th>
                     Nome
                 </th>
+<<<<<<< HEAD
                 <th>
                     Aula 1
                 </th>
                 <th>
+=======
+                <th *ngIf="info.quantidadePresencas === 2 || info.quantidadePresencas === 4">
+                    Aula 1
+                </th>
+                <th *ngIf="info.quantidadePresencas === 2 || info.quantidadePresencas === 4">
+>>>>>>> b92389ad3fdc8fa48f6fdbecd3b5b99cc1c22e74
                     Aula 2
                 </th>
                 <th *ngIf="info.quantidadePresencas === 4">
