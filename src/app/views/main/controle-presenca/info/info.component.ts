@@ -1,7 +1,7 @@
 import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ApiService} from '../../../../core/api/api.service';
-import {UiElement, UiSnackbar, UiToolbarService} from 'ng-smn-ui';
+import {UiElement, UiSnackbar, UiToolbarService, UiDialog} from 'ng-smn-ui';
 
 @Component({
     selector: 'app-controle-presenca-info',
@@ -16,8 +16,6 @@ export class ControlePresencaInfoComponent implements OnInit, AfterViewInit, OnD
     status: any[];
     quantidadePresencas: any[];
     loading: boolean;
-    alunos;
-    presencas;
     @ViewChild('formControle') formControle;
 
     constructor(
@@ -28,7 +26,9 @@ export class ControlePresencaInfoComponent implements OnInit, AfterViewInit, OnD
         private toolbarService: UiToolbarService,
         private element: ElementRef
     ) {
-        this.info = {};
+        this.info = {
+            alunos: []
+        };
         this.turmas = [];
         this.disciplinas = [];
         this.status = [];
@@ -66,8 +66,6 @@ export class ControlePresencaInfoComponent implements OnInit, AfterViewInit, OnD
             .call({id: this.activedRoute.snapshot.params['id']})
             .subscribe(res => {
                 this.info = res.content;
-                this.alunos = this.info.alunos;
-                this.presencas = Array(this.info.quantidadePresencas).fill(false);
             }, err => {
                 UiSnackbar.show({
                     text: err.message
@@ -75,21 +73,37 @@ export class ControlePresencaInfoComponent implements OnInit, AfterViewInit, OnD
             });
     }
 
+    verificarConclusao(dialog) {
+        for (const control in this.formControle.controls) {
+            if (this.formControle.controls.hasOwnProperty(control)) {
+                this.formControle.controls[control].markAsTouched();
+                this.formControle.controls[control].markAsDirty();
+            }
+        }
+
+        if (this.formControle.invalid) {
+            UiElement.focus(this.element.nativeElement.querySelector('form .ng-invalid'));
+            return false;
+        }
+
+        if(!this.addingNew && this.info.idStatus === 2) {
+            this.info.confirmarControle = true;
+            UiDialog.show(dialog);
+        } else {
+            this.onSubmit();
+        }
+
+    }
+
+    fecharDialog() {
+        this.info.confirmarControle = false;
+        UiDialog.hide();
+    }
 
     onSubmit() {
+        UiDialog.hide();
+
         if (!this.loading) {
-            for (const control in this.formControle.controls) {
-                if (this.formControle.controls.hasOwnProperty(control)) {
-                    this.formControle.controls[control].markAsTouched();
-                    this.formControle.controls[control].markAsDirty();
-                }
-            }
-
-            if (this.formControle.invalid) {
-                UiElement.focus(this.element.nativeElement.querySelector('form .ng-invalid'));
-                return false;
-            }
-
             this.loading = true;
             if (this.addingNew) {
                 this.api
@@ -103,13 +117,12 @@ export class ControlePresencaInfoComponent implements OnInit, AfterViewInit, OnD
                         this.router.navigate(['/controle-presenca/', res.content.id]);
                     }, (err) => {
                         UiSnackbar.show({
-                            text: err.message
+                            text: err.error.message
                         });
                     }, () => {
                         this.loading = false;
                     });
             } else {
-                console.log('carregando')
                 this.api
                     .prep('administracao', 'controlePresenca', 'atualizar')
                     .call(this.info)
@@ -162,9 +175,6 @@ export class ControlePresencaInfoComponent implements OnInit, AfterViewInit, OnD
             ).call()
             .subscribe(res => {
                     this.turmas = res.content;
-                }, null,
-                () => {
-
                 }
             );
     }
@@ -219,5 +229,15 @@ export class ControlePresencaInfoComponent implements OnInit, AfterViewInit, OnD
                     text: err.message
                 });
             });
+    }
+
+    changePresenca(array, index) {
+        event.stopPropagation();
+        array[index] = !array[index];
+    }
+
+    updateValidity() {
+        this.formControle.controls['horaAbertura'].updateValueAndValidity();
+        this.formControle.controls['horaFechamento'].updateValueAndValidity();
     }
 }

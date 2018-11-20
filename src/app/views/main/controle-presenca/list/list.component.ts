@@ -83,7 +83,6 @@ export class ControlePresencaListComponent implements OnInit, AfterViewInit {
                         this.loadingInit = false;
                     });
         }
-
     }
 
     getStatus() {
@@ -94,7 +93,7 @@ export class ControlePresencaListComponent implements OnInit, AfterViewInit {
         ).call()
             .subscribe(res => {
                     this.statusList = res.content;
-                    this.statusList.unshift({id: null, nome: ''})
+                    this.statusList.unshift({id: null, nome: ''});
                 }, null,
                 () => {
 
@@ -103,47 +102,35 @@ export class ControlePresencaListComponent implements OnInit, AfterViewInit {
     }
 
     getDisciplina() {
-        /*this.api.prep(
+        this.api.prep(
             'administracao',
             'disciplina',
             'selecionar'
         ).call()
             .subscribe(res => {
                     this.disciplinas = res.content;
+                    this.disciplinas.unshift({id: null, nome: ''});
                 }, null,
                 () => {
 
                 }
-            );*/
-
-        this.disciplinas = [
-            {id: null, nome: ''},
-            {id: 1234, nome: 'Produção de Bugs'},
-            {id: 4567, nome: 'Filosofia com Piton'},
-            {id: 8910, nome: 'Batata'}
-        ];
+            );
     }
 
     getTurma() {
-       /* this.api.prep(
+       this.api.prep(
             'administracao',
             'turma',
             'selecionar'
         ).call()
             .subscribe(res => {
                     this.turmas = res.content;
+                    this.turmas.unshift({id: null, nome: ''});
                 }, null,
                 () => {
 
                 }
-            );*/
-
-        this.turmas = [
-            {id: null, nome: '', semestre: null},
-            {id: 237, nome: '4º SEM Sistemas de Informação', semestre: 4},
-            {id: 310, nome: '4º SEM Engenharia de Software', semestre: 4},
-            {id: 123, nome: '2º SEM Batata', semestre: 2}
-        ]
+            );
     }
 
     /*TODO

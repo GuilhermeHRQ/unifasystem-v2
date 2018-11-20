@@ -6,7 +6,7 @@
             </button>
             <span class="title">{{addingNew ? 'Novo controle de presenças' : 'Alterando ' + (info.nome || 'controle de presenças')}}</span>
             <div class="align-right">
-                <button *ngIf="!addingNew && this.info.idStatus !== 4" class="ui-button flat icon" type="button"
+                <button *ngIf="!addingNew && this.info.idStatus !== 3 && this.info.idStatus !== 4" class="ui-button flat icon" type="button"
                         uiRipple
                         [uiMenuTrigger]="menuCancelar" align="right">
                     <i class="material-icons">delete</i>
@@ -14,7 +14,7 @@
             </div>
         </ui-toolbar>
         <ui-card-content>
-            <form #formControle="ngForm" class="ui-validate on-dirty on-submit" (submit)="onSubmit()">
+            <form #formControle="ngForm" class="ui-validate on-dirty on-submit" (submit)="verificarConclusao(confirmarControleDialog)">
                 <fieldset [disabled]="!addingNew">
                     <div class="ui-flex-container break-on-s600">
                         <ui-input-container>
@@ -84,7 +84,7 @@
                                            [chosen]="false"
                                            [options]="quantidadePresencas" value="qtd" label="qtd" required uiInput>
                                 </ui-select>
-                                <label> Quantidade de presenças </label>
+                                <label> Quantidade presenças </label>
                                 <div class="ui-messages">
                                     <div *ngIf="inputQuantidadePresencas.errors && inputQuantidadePresencas.dirty">
                                         <div class="ui-message error"
@@ -106,7 +106,7 @@
                                    name="horaAbertura"
                                    uiTimePicker="horaAberturaTimePicker"
                                    uiMaskTime
-                                   #horaAbertura="ngModel" [maxTime]="info.horaFechamento" required>
+                                   #horaAbertura="ngModel" [maxTime]="info.horaFechamento" required (blur)="updateValidity()">
                             <label>Hora Abertura</label>
                             <div class="ui-messages">
                                 <div *ngIf="horaAbertura.errors && horaAbertura.dirty">
@@ -133,7 +133,7 @@
                                    name="horaFechamento"
                                    uiTimePicker="horaFechamentoTimePicker"
                                    uiMaskTime
-                                   #horaFechamento="ngModel" [minTime]="info.horaAbertura" required>
+                                   #horaFechamento="ngModel" [minTime]="info.horaAbertura" required (blur)="updateValidity()">
                             <label>Hora Fechamento</label>
                             <div class="ui-messages">
                                 <div *ngIf="horaFechamento.errors && horaFechamento.dirty">
@@ -158,7 +158,7 @@
                 <ui-input-container>
                     <textarea [(ngModel)]="info.conteudo" name="inputConteudo" rows="2" uiInput
                               uiMaxlength="250" #inputConteudo="ngModel" autosize
-                              [disabled]="this.info.idStatus === 4"></textarea>
+                              [disabled]="this.info.idStatus === 4 || this.info.idStatus === 3" [required]="this.info.idStatus === 2"></textarea>
                     <label>Conteúdo</label>
                     <div class="ui-messages">
                         <div *ngIf="inputConteudo.errors && inputConteudo.dirty">
@@ -173,7 +173,7 @@
                         </div>
                     </div>
                 </ui-input-container>
-                <div class="ui-fab-container" *ngIf="this.info.idStatus !== 4">
+                <div class="ui-fab-container" *ngIf="this.info.idStatus !== 4 && this.info.idStatus !== 3">
                     <button class="ui-button success fab" uiRipple>
                         <i class="material-icons">{{ addingNew ? 'check' : 'edit'}}</i>
                     </button>
@@ -184,71 +184,55 @@
 
     <div style="height: 32px"></div>
 
-    <!--<ui-card>
+    <ui-card *ngIf="!addingNew">
         <ui-toolbar class="flat">
             <span class="title">Alunos presentes</span>
         </ui-toolbar>
-        <ul class="ui-list">
-            <div class="ui-list-item multi-line" *ngFor="let aluno of alunos">
-                <div class="lines">
-                    {{aluno.nomeAluno}}
-                </div>
-                <div class="action" *ngFor="let presenca of presencas">
-                    <ui-option>
-                        <input type="checkbox" [(ngModel)]="tes" [checked]="getPresenca()">
-                    </ui-option>
-                </div>
-            </div>
-        </ul>
-    </ui-card>-->
-
-    <ui-card>
-        <ui-toolbar class="flat">
-            <span class="title">Alunos presentes</span>
-        </ui-toolbar>
-        <ui-data-table>
+        <ui-data-table class="responsive">
             <tbody>
-            <tr>
-                <th>
-                    Código
-                </th>
-                <th>
-                    Nome
-                </th>
-<<<<<<< HEAD
-                <th>
-                    Aula 1
-                </th>
-                <th>
-=======
-                <th *ngIf="info.quantidadePresencas === 2 || info.quantidadePresencas === 4">
-                    Aula 1
-                </th>
-                <th *ngIf="info.quantidadePresencas === 2 || info.quantidadePresencas === 4">
->>>>>>> b92389ad3fdc8fa48f6fdbecd3b5b99cc1c22e74
-                    Aula 2
-                </th>
-                <th *ngIf="info.quantidadePresencas === 4">
-                    Aula 3
-                </th>
-                <th *ngIf="info.quantidadePresencas === 4">
-                    Aula 4
-                </th>
-            </tr>
-            <tr class="empty" *ngFor="let item of info.alunos; let i = index">
-             <td> {{ item.idAluno }}</td>
-                <td> {{ item.nomeAluno }}</td>
-                <td *ngFor="let isPresent of item.presencas; let j = index">
-                    <ui-option>
-                        <input type="checkbox" [(ngModel)]="item.presencas[j]">
-                    </ui-option>
-                </td>
-            </tr>
-            <!-- <tr *ngIf="!info.alunos.length">
-                <td colspan="5">
-                    Nenhum aluno presente.
-                </td>
-            </tr> -->
+                <tr>
+                    <th>
+                        Código
+                    </th>
+                    <th>
+                        Nome
+                    </th>
+                    <th>
+                        Aula 1
+                    </th>
+                    <th>
+                        Aula 2
+                    </th>
+                    <th *ngIf="info.quantidadePresencas === 4">
+                        Aula 3
+                    </th>
+                    <th *ngIf="info.quantidadePresencas === 4">
+                        Aula 4
+                    </th>
+                    <th></th>
+                </tr>
+                <tr class="empty" *ngFor="let item of info.alunos">
+                    <td data-title="Código" class="no-wrap"> {{ item.idAluno }}</td>
+                    <td data-title="Nome" class="no-wrap"> {{ item.nomeAluno }}</td>
+                    <td *ngFor="let isPresent of item.presencas; let j = index" class="no-wrap special-title">
+                        <p>Aula {{j+1}}</p>
+                        <ui-option>
+                            <input type="checkbox" [(ngModel)]="item.presencas[j]" (click)="$event.preventDefault();changePresenca(item.presencas, j)" [disabled]="this.info.idStatus === 3 || this.info.idStatus === 4">
+                        </ui-option>
+                    </td>
+                    <td>
+                        <button *ngIf="!item.horaSaida && (info.idStatus !== 1 && info.idStatus !== 4)" class="ui-button flat icon" type="button"
+                                uiRipple [uiTooltip]="'Aluno não confirmou saída'"
+                               align="right">
+                            <i class="material-icons">info</i>
+                        </button>
+                    </td>
+                </tr>
+                <tr *ngIf="!info.alunos.length">
+                    <td colspan="5">
+                        Nenhum aluno presente
+                    </td>
+                </tr>
             </tbody>
             <tfoot>
             </tfoot>
@@ -258,9 +242,6 @@
     <div style="height: 32px"></div>
 
 </div>
-
-
-
 
 
 <ui-menu #menuCancelar>
@@ -274,3 +255,12 @@
         </div>
     </div>
 </ui-menu>
+
+<ui-dialog class="teste" #confirmarControleDialog card-size="400">
+    <!--<ui-card-title>Deseja confirmar e finalizar este controle de presenças</ui-card-title>-->
+        <p style="padding: 0 16px">Deseja confirmar e finalizar este controle de presenças?</p>
+    <div class="ui-button-container cover">
+        <button class="ui-button flat" uiRipple (click)="fecharDialog()">Cancelar</button>
+        <button class="ui-button raised primary" uiRipple (click)="onSubmit()">Confirmar</button>
+    </div>
+</ui-dialog>
