@@ -232,7 +232,6 @@ export class ControlePresencaInfoComponent implements OnInit, AfterViewInit, OnD
     }
 
     changePresenca(array, index) {
-        event.stopPropagation();
         array[index] = !array[index];
     }
 
