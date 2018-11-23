@@ -74,6 +74,7 @@ export class ControlePresencaInfoComponent implements OnInit, AfterViewInit, OnD
     }
 
     verificarConclusao(dialog) {
+
         for (const control in this.formControle.controls) {
             if (this.formControle.controls.hasOwnProperty(control)) {
                 this.formControle.controls[control].markAsTouched();
@@ -86,7 +87,7 @@ export class ControlePresencaInfoComponent implements OnInit, AfterViewInit, OnD
             return false;
         }
 
-        if(!this.addingNew && this.info.idStatus === 2) {
+        if (!this.addingNew && this.info.idStatus === 2) {
             this.info.confirmarControle = true;
             UiDialog.show(dialog);
         } else {

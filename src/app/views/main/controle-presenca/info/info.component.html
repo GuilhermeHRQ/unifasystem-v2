@@ -106,7 +106,7 @@
                                    name="horaAbertura"
                                    uiTimePicker="horaAberturaTimePicker"
                                    uiMaskTime
-                                   #horaAbertura="ngModel" [maxTime]="info.horaFechamento" required (blur)="updateValidity()">
+                                   #horaAbertura="ngModel" [maxTime]="info.horaFechamento" required>
                             <label>Hora Abertura</label>
                             <div class="ui-messages">
                                 <div *ngIf="horaAbertura.errors && horaAbertura.dirty">
@@ -121,7 +121,7 @@
                                 </div>
                             </div>
                             <div class="icon">
-                                <button class="ui-button icon flat" uiTimePickerCaller="horaAberturaTimePicker">
+                                <button type="button" class="ui-button icon flat" uiTimePickerCaller="horaAberturaTimePicker">
                                     <i class="material-icons">access_time</i>
                                 </button>
                             </div>
@@ -133,7 +133,7 @@
                                    name="horaFechamento"
                                    uiTimePicker="horaFechamentoTimePicker"
                                    uiMaskTime
-                                   #horaFechamento="ngModel" [minTime]="info.horaAbertura" required (blur)="updateValidity()">
+                                   #horaFechamento="ngModel" [minTime]="info.horaAbertura" required>
                             <label>Hora Fechamento</label>
                             <div class="ui-messages">
                                 <div *ngIf="horaFechamento.errors && horaFechamento.dirty">
@@ -148,7 +148,7 @@
                                 </div>
                             </div>
                             <div class="icon">
-                                <button class="ui-button icon flat" uiTimePickerCaller="horaFechamentoTimePicker">
+                                <button type="button" class="ui-button icon flat" uiTimePickerCaller="horaFechamentoTimePicker">
                                     <i class="material-icons">access_time</i>
                                 </button>
                             </div>
@@ -229,7 +229,7 @@
                     </td>
                 </tr>
                 <tr *ngIf="!info.alunos.length">
-                    <td colspan="5">
+                    <td colspan="8">
                         Nenhum aluno presente
                     </td>
                 </tr>

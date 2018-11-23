@@ -5,7 +5,7 @@
 }
 
 :host {
-    background-color: lightskyblue;
+    background-image: linear-gradient(to bottom, #3485ff, #a1d6f7);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -16,7 +16,7 @@
 
         .logo {
             width: 280px;
-            margin: 0 auto;
+            margin: 0 auto 32px;
         }
 
         ui-card {
@@ -25,7 +25,7 @@
 
             .ui-progress {
                 position: absolute;
-            }        
+            }
         }
     }
 

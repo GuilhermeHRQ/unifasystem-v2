@@ -12,7 +12,7 @@
         <ui-card-content>
             <form #form="ngForm" class="ui-validate on-dirty on-submit" (submit)="onSubmit(form)">
                 <ui-input-container>
-                    <input type="number" [(ngModel)]="codigo" uiInput #inputCodigo="ngModel" name="codigo" required>
+                    <input type="text" [(ngModel)]="codigo" uiMaskInteger uiInput #inputCodigo="ngModel" name="codigo" autocomplete="off" required>
                     <label>Código do aluno</label>
                 </ui-input-container>
                 <div class="ui-button-container">

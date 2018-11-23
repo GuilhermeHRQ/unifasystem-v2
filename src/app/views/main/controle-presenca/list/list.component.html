@@ -40,7 +40,7 @@
                     <ui-input-container>
                         <input type="text" uiInput name="dataInicial" [(ngModel)]="filtro.dataInicial"
                             #inputDataInicial="ngModel" [uiDatePicker]="'dataInicial'" [maxDate]="filtro.dataFinal" uiMaskDate
-                            required>
+                            required (ngModelChange)="getControlesPresencas()">
                         <label>Data inicial</label>
                         <div class="icon">
                             <button class="ui-button icon flat" [uiDatePickerCaller]="'dataInicial'">
@@ -60,7 +60,7 @@
                     </ui-input-container>
                     <ui-input-container>
                         <input type="text" uiInput name="dataFinal" #inputDataFinal="ngModel" [(ngModel)]="filtro.dataFinal"
-                            [uiDatePicker]="'dataFinal'" [minDate]="filtro.dataInicial" uiMaskDate required>
+                            [uiDatePicker]="'dataFinal'" [minDate]="filtro.dataInicial" uiMaskDate required (ngModelChange)="getControlesPresencas()">
                         <label>Data final</label>
                         <div class="icon">
                             <button class="ui-button icon flat" [uiDatePickerCaller]="'dataFinal'">

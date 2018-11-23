@@ -1,7 +1,7 @@
-import { AfterViewInit, Component, OnInit, ElementRef } from '@angular/core';
+import {AfterViewInit, Component, OnInit, ElementRef} from '@angular/core';
 import {UiElement, UiSnackbar, UiToolbarService} from 'ng-smn-ui';
-import { ApiService } from '../../../core/api/api.service';
-import { environment } from '../../../../environments/environment';
+import {ApiService} from '../../../core/api/api.service';
+import {environment} from '../../../../environments/environment';
 
 @Component({
     selector: 'app-aluno-presenca',
@@ -13,23 +13,19 @@ export class PresencaComponent implements OnInit, AfterViewInit {
     loading: boolean;
 
     constructor(private element: ElementRef,
-                private api: ApiService,
-                private toolbar: UiToolbarService) {
+                private api: ApiService) {
     }
 
     onSubmit(form) {
-        for (const control in form.controls) {
-            if (form.controls.hasOwnProperty(control)) {
-                form.controls[control].markAsTouched();
-                form.controls[control].markAsDirty();
-                console.log('entrou')
-            }
-        }
         if (!form.valid) {
             UiElement.focus(this.element.nativeElement.querySelector('form .ng-invalid'));
+            UiSnackbar.show({
+                text: 'Insíra seu código do aluno',
+                center: true
+            });
             return false;
         }
-        if(this.loading){
+        if (this.loading) {
             return false;
         }
         this.loading = true;
@@ -37,15 +33,15 @@ export class PresencaComponent implements OnInit, AfterViewInit {
         this.api
             .http('POST', `${environment.AUTH_API}/aluno-presenca/${this.codigo}`)
             .call()
-            .subscribe( res => {
-                console.log(res.content)
+            .subscribe(res => {
                 UiSnackbar.show({
                     text: res.content.message,
                     center: true
                 });
+                form.reset();
             }, err => {
                 UiSnackbar.show({
-                    text: err.message,
+                    text: 'Aluno não encontrado.',
                     center: true
                 });
             }, () => {
