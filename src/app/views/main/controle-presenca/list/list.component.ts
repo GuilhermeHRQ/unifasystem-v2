@@ -51,15 +51,11 @@ export class ControlePresencaListComponent implements OnInit, AfterViewInit {
         return formmatedDate;
     }
 
-    /*verifyDate() {
-        if() {
-            return;
-        }
-
+    verifyDate() {
         this.filtro.dataInicial = this.filtro.dataInicial ? this.formmatDate(this.filtro.dataInicial) : undefined;
         this.filtro.dataFinal = this.filtro.dataFinal ? this.formmatDate(this.filtro.dataFinal) : undefined;
         this.getControlesPresencas();
-    }*/
+    }
 
     getControlesPresencas() {
         if(!this.loadingInit) {

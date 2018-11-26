@@ -114,7 +114,7 @@ export class ApiService {
                 }
             }
 
-            // url = url.replace('7.37', '10.203');
+            // url = url.replace('18.188.151.183:1001', '192.168.10.197:4200');
 
             const params = new HttpParams({
                 fromObject: options.params
