@@ -3,6 +3,7 @@ import { Title } from '@angular/platform-browser';
 import { UiCookie, UiToolbarService, UiColor } from 'ng-smn-ui';
 import { UserService } from '../../core/utils/user/user.service';
 import { Router } from '@angular/router';
+import {ApiService} from '../../core/api/api.service';
 
 @Component({
     selector: 'app-main',
@@ -16,9 +17,11 @@ export class MainComponent implements OnInit, AfterViewInit {
     menu: any;
     user: any;
 
-    constructor(private titleService: Title,
+    constructor(
+        private titleService: Title,
         private toolbarService: UiToolbarService,
-        private router: Router) {
+        private router: Router
+    ) {
         toolbarService.change.subscribe(title => {
             this.title = title;
         });

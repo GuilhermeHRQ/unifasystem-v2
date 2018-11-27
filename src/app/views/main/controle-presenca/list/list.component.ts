@@ -45,22 +45,15 @@ export class ControlePresencaListComponent implements OnInit, AfterViewInit {
         this.toolbar.activateExtendedToolbar(600);
     }
 
-    formmatDate(dateString) {
-        dateString = new Date(this.filtro.dataInicial).toLocaleDateString();
-        const formmatedDate = dateString.split('/').reverse().join('-');
-        return formmatedDate;
-    }
-
     verifyDate() {
-        this.filtro.dataInicial = this.filtro.dataInicial ? this.formmatDate(this.filtro.dataInicial) : undefined;
-        this.filtro.dataFinal = this.filtro.dataFinal ? this.formmatDate(this.filtro.dataFinal) : undefined;
+        this.filtro.dataInicial = this.filtro.dataInicial ? new Date(this.filtro.dataInicial).toLocaleDateString().split('/').reverse().join('-') : undefined;
+        this.filtro.dataFinal = this.filtro.dataFinal ? new Date(this.filtro.dataFinal).toLocaleDateString().split('/').reverse().join('-') : undefined;
         this.getControlesPresencas();
     }
 
     getControlesPresencas() {
-        if(!this.loadingInit) {
+        if (!this.loadingInit) {
             this.loadingInit = true;
-            this.pagina = 1;
 
             this.api.prep(
                 'administracao',
@@ -114,7 +107,7 @@ export class ControlePresencaListComponent implements OnInit, AfterViewInit {
     }
 
     getTurma() {
-       this.api.prep(
+        this.api.prep(
             'administracao',
             'turma',
             'selecionar'

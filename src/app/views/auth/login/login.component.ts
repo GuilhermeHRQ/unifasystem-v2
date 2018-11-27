@@ -50,8 +50,6 @@ export class LoginComponent implements OnInit, AfterViewInit {
     }
 
     getInfo(form, info) {
-        console.log(info);
-
         if (form.invalid || this.loading) {
             form.controls.usuario.markAsTouched();
             form.controls.usuario.markAsDirty();
@@ -102,7 +100,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
             .call({ login: info.usuario, senha: info.senha })
             .subscribe(res => {
                 const content = res.content;
-                this.api.set(content.api, content.opcoes);
+                this.api.set(content.api, content.user.opcoes);
                 UserService.setToken(content.token, info.matenhaConectado);
                 UserService.setMenu(content.user.opcoes);
                 UserService.setUser(content.user);

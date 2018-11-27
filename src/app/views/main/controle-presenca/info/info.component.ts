@@ -127,15 +127,17 @@ export class ControlePresencaInfoComponent implements OnInit, AfterViewInit, OnD
                 this.api
                     .prep('administracao', 'controlePresenca', 'atualizar')
                     .call(this.info)
-                    .subscribe((res) => {
+                    .subscribe(() => {
                         UiSnackbar.show({
                             text: 'Controle atualizado com sucesso!',
                             center: true
                         });
 
                         this.router.navigate(['/controle-presenca/']);
-                    }, (err) => {
-                        console.log(err)
+                    }, () => {
+                        UiSnackbar.show({
+                            text: 'Ocorreu um erro ao tentar inserir um novo controle'
+                        });
                     }, () => {
                         this.loading = false;
                     });
