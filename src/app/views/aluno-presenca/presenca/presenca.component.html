@@ -1,0 +1,25 @@
+<div class="core">
+    <div class="logo">
+        <img src="assets/images/Uni_FACEF_MUNICIPAL.png" alt="Cronos logo" title="Cronos logo">
+    </div>
+    <ui-card>
+        <div class="ui-progress accent" [class.hide]="!loading">
+            <div class="indeterminate"></div>
+        </div>
+        <ui-toolbar class="flat">
+            <span class="title">Insira seu código</span>
+        </ui-toolbar>
+        <ui-card-content>
+            <form #form="ngForm" class="ui-validate on-dirty on-submit" (submit)="onSubmit(form)">
+                <ui-input-container>
+                    <input type="text" [(ngModel)]="codigo" uiMaskInteger uiInput #inputCodigo="ngModel" name="codigo" autocomplete="off"
+                           (keydown)="bloquearCtrlJ($event)" (blur)="returnFocus()">
+                    <label>Código do aluno</label>
+                </ui-input-container>
+                <div class="ui-button-container">
+                    <button type="submit" class="ui-button full accent">Inserir presença</button>
+                </div>
+            </form>
+        </ui-card-content>
+    </ui-card>
+</div>

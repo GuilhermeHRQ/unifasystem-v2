@@ -6,6 +6,8 @@ import { ErrorModule } from './views/error/error.module';
 import { MainModule } from './views/main/main.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AuthModule } from './views/auth/auth.module';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { AlunoPresencaModule } from './views/aluno-presenca/aluno-presenca.module';
 
 @NgModule({
     declarations: [
@@ -14,9 +16,11 @@ import { AuthModule } from './views/auth/auth.module';
     imports: [
         SharedModule,
         AppRoutingModule,
+        AlunoPresencaModule,
         ErrorModule,
         MainModule,
-        AuthModule
+        AuthModule,
+        BrowserAnimationsModule,
     ],
     providers: [],
     bootstrap: [AppComponent]

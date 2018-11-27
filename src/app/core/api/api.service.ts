@@ -103,13 +103,18 @@ export class ApiService {
                 const methodFormatted: string = method.toUpperCase();
 
                 if (methodFormatted === 'GET' || methodFormatted === 'DELETE') {
+                    Object.keys(paramsFormatted.leftover).forEach(item => {
+                        if(!paramsFormatted.leftover[item]) {
+                            delete paramsFormatted.leftover[item];
+                        }
+                    });
                     options.params = paramsFormatted.leftover;
                 } else {
                     options.body = paramsFormatted.leftover;
                 }
             }
 
-            // url = url.replace('7.37', '10.203');
+            // url = url.replace('18.188.151.183:1001', '192.168.10.197:4200');
 
             const params = new HttpParams({
                 fromObject: options.params

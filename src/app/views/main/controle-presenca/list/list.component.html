@@ -1,0 +1,141 @@
+<div class="ui-s840">
+    <ui-card class="elevate-on-toolbar">
+        <div class="ui-progress accent" [class.hide]="!loadingInit" style="position: absolute">
+            <div class="indeterminate"></div>
+        </div>
+        <ui-toolbar class="flat">
+            <span class="title"> Controles de presença </span>
+            <div class="align-right">
+                <div class="ui-button-container">
+                    <button class="ui-button flat icon" uiRipple (click)="filterOpen = !filterOpen">
+                        <i class="material-icons">filter_list</i>
+                    </button>
+                </div>
+            </div>
+        </ui-toolbar>
+        <div style="overflow: hidden" [@enterLeaveViewAnimation] *ngIf="filterOpen">
+            <ui-card-content>
+                <ui-input-container>
+                    <ui-select #inputStatus="ngModel" id="select" name="status" [(ngModel)]="filtro.idStatus" [chosen]="true"
+                        [options]="statusList" value="id" label="descricao" uiInput (ngModelChange)="getControlesPresencas(); pagina = 1">
+                    </ui-select>
+                    <label for="select"> Status </label>
+                </ui-input-container>
+
+                    <ui-input-container>
+                            <ui-select #inputTurma="ngModel" id="turma" name="turma" [(ngModel)]="filtro.idTurma"
+                            [chosen]="true" [options]="turmas" value="id" label="nome" uiInput (ngModelChange)="getControlesPresencas(); pagina = 1">
+                        </ui-select>
+                        <label for="turma"> Turma </label>
+                    </ui-input-container>
+
+                    <ui-input-container>
+                        <ui-select #inputDisciplinas="ngModel" id="disciplina" name="disciplina" [(ngModel)]="filtro.idDisciplina"
+                            [chosen]="true" [options]="disciplinas" value="id" label="nome" uiInput (ngModelChange)="getControlesPresencas(); pagina = 1">
+                        </ui-select>
+                        <label for="disciplina"> Disciplina </label>
+                    </ui-input-container>
+
+                <div class="ui-flex-container">
+                    <ui-input-container>
+                        <input type="text" uiInput name="dataInicial" [(ngModel)]="filtro.dataInicial"
+                            #inputDataInicial="ngModel" [uiDatePicker]="'dataInicial'" [maxDate]="filtro.dataFinal" uiMaskDate
+                            required (blur)="verifyDate(); pagina = 1">
+                        <label>Data inicial</label>
+                        <div class="icon">
+                            <button class="ui-button icon flat" [uiDatePickerCaller]="'dataInicial'">
+                                <i class="material-icons">today</i>
+                            </button>
+                        </div>
+                        <div class="ui-messages">
+                            <div *ngIf="inputDataInicial.errors && inputDataInicial.dirty">
+                                <div class="ui-message error" [hidden]="!inputDataInicial.pristine && !inputDataInicial.errors.parse">
+                                    Digite um período valido
+                                </div>
+                                <div class="ui-message error" [hidden]="!inputDataInicial.errors.maxDate">
+                                    Digite um período menor que o período final
+                                </div>
+                            </div>
+                        </div>
+                    </ui-input-container>
+                    <ui-input-container>
+                        <input type="text" uiInput name="dataFinal" #inputDataFinal="ngModel" [(ngModel)]="filtro.dataFinal"
+                            [uiDatePicker]="'dataFinal'" [minDate]="filtro.dataInicial" uiMaskDate required (blur)="verifyDate(); pagina = 1">
+                        <label>Data final</label>
+                        <div class="icon">
+                            <button class="ui-button icon flat" [uiDatePickerCaller]="'dataFinal'">
+                                <i class="material-icons">today</i>
+                            </button>
+                        </div>
+                        <div class="ui-messages">
+                            <div *ngIf="inputDataFinal.errors && inputDataFinal.dirty">
+                                <div class="ui-message error" [hidden]="!inputDataFinal.pristine && !inputDataFinal.errors.parse">
+                                    Digite um período valido
+                                </div>
+                                <div class="ui-message error" [hidden]="!inputDataFinal.errors.minDate">
+                                    Digite um período maior que o período inicial
+                                </div>
+                            </div>
+                        </div>
+                    </ui-input-container>
+                </div>
+            </ui-card-content>
+        </div>
+        <ui-data-table>
+            <tbody>
+                <tr>
+                    <th>
+                        Status
+                    </th>
+                    <th>
+                        Turma
+                    </th>
+                    <th>
+                        Disciplina
+                    </th>
+                    <th>
+                        Data cadastro
+                    </th>
+                </tr>
+                <tr class="empty" *ngFor="let item of list" [routerLink]="[item.id]">
+                    <ng-template [ngIf]="!loadingInit">
+                        <td> {{ item.status }}</td>
+                        <td> {{ item.nomeTurma }}</td>
+                        <td> {{ item.nomeDisciplina }}</td>
+                        <td> {{ item.dataCadastro | date: 'dd/MM/yyyy' }}</td>
+                    </ng-template>
+                </tr>
+                <tr>
+                    <td colspan="4" *ngIf="loadingInit">
+                        Carregando...
+                    </td>
+                    <td colspan="4" *ngIf="totalLinhas == 0">
+                        Nenhum dado encontrado.
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="4" class="align-right">
+                        <div class="ui-button-container align-right">
+                            <span class="pagination">
+                                    {{((pagina - 1) * 10) + 1}}-{{pagina * 10 < totalLinhas ? pagina * 10 : totalLinhas}} de {{totalLinhas}}
+                            </span>
+                            <button class="ui-button flat icon" uiRipple [disabled]="pagina < 2" (click)="pagina = pagina - 1; getControlesPresencas()">
+                                <i class="material-icons">keyboard_arrow_left</i>
+                            </button>
+                            <button class="ui-button flat icon" uiRipple [disabled]="totalLinhas < pagina * 10" (click)="pagina = pagina + 1; getControlesPresencas()">
+                                <i class="material-icons">keyboard_arrow_right</i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tfoot>
+        </ui-data-table>
+    </ui-card>
+    <div class="ui-fab-container">
+        <button class="ui-button accent fab" uiRipple [routerLink]="['novo']">
+            <i class="material-icons">add</i>
+        </button>
+    </div>
+</div>
