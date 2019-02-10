@@ -19,8 +19,8 @@
     }
 
     > ui-toolbar .avatar {
-        @include avatar;
-    }
+         @include avatar;
+     }
 }
 
 /deep/ .menu-user {
@@ -32,3 +32,4 @@
         @include avatar;
     }
 }
+
